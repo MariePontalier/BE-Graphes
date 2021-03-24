@@ -2,6 +2,7 @@ package org.insa.graphs.model;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -34,9 +35,22 @@ public class Path {
      */
     public static Path createFastestPathFromNodes(Graph graph, List<Node> nodes)
             throws IllegalArgumentException {
-        List<Arc> arcs = new ArrayList<Arc>();
-        // TODO:
-        return new Path(graph, arcs);
+        List<Arc> arcs_choisis = new ArrayList<Arc>();
+        for (int i=0; i<nodes.size();i++) {
+        	double plusRapide = 5464654654.8;
+        	Arc meilleur = null;
+        	Node noeud=nodes.get(i);
+        	for(Arc arc : noeud.getSuccessors()) {
+        		if (arc.getDestination()==nodes.get(i+1)) {
+        			if(arc.getMinimumTravelTime()<plusRapide) {
+        				plusRapide=arc.getMinimumTravelTime();
+        				meilleur = arc;
+        			}
+        		}
+        	}
+        arcs_choisis.add(meilleur);
+        }
+       return new Path(graph, arcs_choisis);
     }
 
     /**
@@ -55,9 +69,22 @@ public class Path {
      */
     public static Path createShortestPathFromNodes(Graph graph, List<Node> nodes)
             throws IllegalArgumentException {
-        List<Arc> arcs = new ArrayList<Arc>();
-        // TODO:
-        return new Path(graph, arcs);
+    	List<Arc> arcs_choisis = new ArrayList<Arc>();
+        for (int i=0; i<nodes.size();i++) {
+        	double plusCourt = 5464654654.8;
+        	Arc meilleur = null;
+        	Node noeud=nodes.get(i);
+        	for(Arc arc : noeud.getSuccessors()) {
+        		if (arc.getDestination()==nodes.get(i+1)) {
+        			if(arc.getLength()<plusCourt) {
+        				plusCourt=arc.getLength();
+        				meilleur = arc;
+        			}
+        		}
+        	}
+        arcs_choisis.add(meilleur);
+        }
+       return new Path(graph, arcs_choisis);
     }
 
     /**
