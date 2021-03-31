@@ -36,11 +36,17 @@ public class Path {
     public static Path createFastestPathFromNodes(Graph graph, List<Node> nodes)
             throws IllegalArgumentException {
         List<Arc> arcs_choisis = new ArrayList<Arc>();
-        for (int i=0; i<nodes.size();i++) {
-        	double plusRapide = 5464654654.8;
+        if (nodes.size()==0) {
+        	return new Path(graph);
+        }else if(nodes.size()==1) {
+        	return new Path(graph, nodes.get(0));
+        }else {
+        for (int i=0; i<nodes.size()-1;i++) {
+        	double plusRapide = Double.MAX_VALUE;
         	Arc meilleur = null;
         	Node noeud=nodes.get(i);
         	for(Arc arc : noeud.getSuccessors()) {
+        		
         		if (arc.getDestination()==nodes.get(i+1)) {
         			if(arc.getMinimumTravelTime()<plusRapide) {
         				plusRapide=arc.getMinimumTravelTime();
@@ -48,9 +54,13 @@ public class Path {
         			}
         		}
         	}
+        	if (meilleur==null) {
+        		throw new IllegalArgumentException("Les noeuds ne se suivent pas");
+        	}
         arcs_choisis.add(meilleur);
         }
        return new Path(graph, arcs_choisis);
+        }
     }
 
     /**
@@ -70,8 +80,13 @@ public class Path {
     public static Path createShortestPathFromNodes(Graph graph, List<Node> nodes)
             throws IllegalArgumentException {
     	List<Arc> arcs_choisis = new ArrayList<Arc>();
-        for (int i=0; i<nodes.size();i++) {
-        	double plusCourt = 5464654654.8;
+    	if (nodes.size()==0) {
+        	return new Path(graph);
+        }else if(nodes.size()==1) {
+        	return new Path(graph, nodes.get(0));
+        }else {
+        for (int i=0; i<nodes.size()-1;i++) {
+        	double plusCourt = Double.MAX_VALUE;
         	Arc meilleur = null;
         	Node noeud=nodes.get(i);
         	for(Arc arc : noeud.getSuccessors()) {
@@ -82,9 +97,13 @@ public class Path {
         			}
         		}
         	}
+        	if (meilleur==null) {
+        		throw new IllegalArgumentException("Les noeuds ne sont pas reliés entre eux");
+        	}
         arcs_choisis.add(meilleur);
         }
        return new Path(graph, arcs_choisis);
+        }
     }
 
     /**
@@ -123,7 +142,6 @@ public class Path {
 
     // Graph containing this path.
     private final Graph graph;
-
     // Origin of the path
     private final Node origin;
 
@@ -228,8 +246,24 @@ public class Path {
      * @deprecated Need to be implemented.
      */
     public boolean isValid() {
-        // TODO:
-        return false;
+    	List <Arc> arcs = this.getArcs();
+    	boolean result=true;
+        if (this.isEmpty()) {
+        	result = true;
+        }else if (this.size()==1) {
+        	result = true;
+        }else if (this.size()>=2) {
+        	 for (int i = 0; i<arcs.size()-1; i++) {
+        		 if (i==0 && arcs.get(i).getOrigin()!=this.getOrigin()) {
+        			 return false;
+        		 }
+        		 if (arcs.get(i).getDestination()==arcs.get(i+1).getOrigin()) {
+        			 result=true;
+        		 }
+        		 else {return false;}
+             }
+        }
+        return result;
     }
 
     /**
@@ -240,8 +274,11 @@ public class Path {
      * @deprecated Need to be implemented.
      */
     public float getLength() {
-        // TODO:
-        return 0;
+    	float result = 0;
+        for (Arc arcs : this.getArcs()) {
+        	result+= arcs.getLength();
+        }
+        return result;
     }
 
     /**
@@ -255,8 +292,11 @@ public class Path {
      * @deprecated Need to be implemented.
      */
     public double getTravelTime(double speed) {
-        // TODO:
-        return 0;
+    	double result = 0;
+        for (Arc arcs : this.getArcs()) {
+        	result+= arcs.getTravelTime(speed);
+        }
+        return result;
     }
 
     /**
@@ -268,8 +308,11 @@ public class Path {
      * @deprecated Need to be implemented.
      */
     public double getMinimumTravelTime() {
-        // TODO:
-        return 0;
+    	double result = 0;
+        for (Arc arcs : this.getArcs()) {
+        	result+= arcs.getMinimumTravelTime();
+        }
+        return result;
     }
 
 }
