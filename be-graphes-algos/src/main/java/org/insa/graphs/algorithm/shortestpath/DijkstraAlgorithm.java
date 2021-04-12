@@ -53,6 +53,9 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         		break;
         	}
         	for (Arc arc: x.sommet_courant.getSuccessors()) {
+        		if (!data.isAllowed(arc)) {
+                    continue;
+                }
         		Label y = tab_label[arc.getDestination().getId()];
         		if (y.marque==false) {
         			double ancien_cout=y.cout;
