@@ -12,13 +12,26 @@ import org.insa.graphs.algorithm.utils.*;
 public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 	
 	private class Label implements Comparable<Label> {
-		private Node sommet_courant;
-		private boolean marque;
-		private double cout;
-		private Arc arc_precedent;
+		protected Node sommet_courant;
+		protected boolean marque;
+		protected double cout;
+		protected Arc arc_precedent;
 		public double getCost() {return cout;};
+		public double getTotalCost(LabelStar star) {return cout+star.cout;}
 		@Override
 		public int compareTo(Label autre) {
+			return (Double.compare(this.cout, autre.cout));
+		}
+		public int compareTo(LabelStar autre) {
+			return (Double.compare(this.cout, autre.cout));
+		}
+	}
+	//DISTANCE OPTIMISTE : VOL D'OISEAU
+	private class LabelStar extends Label{
+		public int compareTo(Label autre) {
+			return (Double.compare(this.cout, autre.cout));
+		}
+		public int compareTo(LabelStar autre) {
 			return (Double.compare(this.cout, autre.cout));
 		}
 	}
