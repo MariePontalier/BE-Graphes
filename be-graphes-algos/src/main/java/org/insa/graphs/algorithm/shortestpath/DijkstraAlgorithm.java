@@ -44,11 +44,14 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         tab_label[data.getOrigin().getId()].cout = 0;
         BinaryHeap<Label> tas= new BinaryHeap<Label>(); 
         tas.insert(tab_label[data.getOrigin().getId()]);
+        notifyOriginProcessed(data.getOrigin());
 
         //ITERATIONS
         while (!tas.isEmpty()){
         	Label x = tas.deleteMin();
         	x.marque=true;
+            System.out.println(x.cout);
+            notifyNodeMarked(x.sommet_courant);
         	if(data.getDestination()==x.sommet_courant) {
         		break;
         	}
@@ -63,6 +66,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         			if(ancien_cout!=y.cout) {
         				tas.insert(y);
         				y.arc_precedent=arc;
+                        notifyNodeReached(arc.getDestination());
         			}
         		}
         	}
@@ -71,7 +75,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         if(tab_label[data.getDestination().getId()].cout==Double.MAX_VALUE) {
         	solution=new ShortestPathSolution(data, Status.INFEASIBLE);
         } else {
-        	
+        	notifyDestinationReached(data.getDestination());
         	ArrayList<Arc> arcs = new ArrayList<>();
         	Arc arc = tab_label[data.getDestination().getId()].arc_precedent;
         	while (arc != null) {
