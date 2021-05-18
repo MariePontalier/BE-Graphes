@@ -16,7 +16,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 		protected boolean marque;
 		protected double cout;
 		protected Arc arc_precedent;
-		public double getCost() {return cout;};
+		//public double getCost() {return cout;};
 		public double getTotalCost() {return cout;}
 		@Override
 		public int compareTo(Label autre) {
@@ -27,6 +27,17 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
     public DijkstraAlgorithm(ShortestPathData data) {
         super(data);
     }
+    
+    protected Label[] initLabel() {
+    	Label[] tab_label= new Label[data.getGraph().size()]; //init_label
+        for (int i=0; i<data.getGraph().size();i++) {
+        	tab_label[i]=new Label();
+        	tab_label[i].sommet_courant=data.getGraph().get(i);
+        	tab_label[i].marque=false;
+        	tab_label[i].cout=Double.MAX_VALUE;
+        }
+        return tab_label;
+    }
 
     @Override
     protected ShortestPathSolution doRun() {
@@ -35,13 +46,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         final ShortestPathData data = getInputData();
         ShortestPathSolution solution = null;
         Graph graph = data.getGraph();
-        Label[] tab_label= new Label[graph.size()];
-        for (int i=0; i<graph.size();i++) {
-        	tab_label[i]=new Label();
-        	tab_label[i].sommet_courant=graph.get(i);
-        	tab_label[i].marque=false;
-        	tab_label[i].cout=Double.MAX_VALUE;
-        }
+        Label[] tab_label= initLabel();
         tab_label[data.getOrigin().getId()].cout = 0;
         BinaryHeap<Label> tas= new BinaryHeap<Label>(); 
         tas.insert(tab_label[data.getOrigin().getId()]);
@@ -63,13 +68,13 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         		Label y = tab_label[arc.getDestination().getId()];
         		if (y.marque==false) {
         			double ancien_cout=y.cout;
-        			y.cout=Math.min(ancien_cout, x.cout+arc.getLength());
+        			y.cout=Math.min(ancien_cout, x.cout+data.getCost(arc));
         			if(ancien_cout!=y.cout) {
         				tas.insert(y);
         				y.arc_precedent=arc;
                         notifyNodeReached(arc.getDestination());
         			}
-        		}
+        		} 
         	}
         }
         

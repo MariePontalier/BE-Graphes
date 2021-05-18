@@ -3,6 +3,7 @@ package org.insa.graphs.algorithm.shortestpath;
 import java.util.*;
 
 import org.insa.graphs.algorithm.shortestpath.DijkstraAlgorithm.Label;
+import org.insa.graphs.algorithm.AbstractInputData.Mode;
 import org.insa.graphs.algorithm.AbstractSolution.Status;
 //import org.insa.graphs.algorithm.shortestpath.DijkstraAlgorithm.Label;
 import org.insa.graphs.algorithm.utils.BinaryHeap;
@@ -28,21 +29,30 @@ public class AStarAlgorithm extends DijkstraAlgorithm {
         super(data);
     }
     
-    @Override
+    protected Label[] initLabel() {
+    	Label[] tab_label= new LabelStar[data.getGraph().size()]; //init_label 
+        for (int i=0; i<data.getGraph().size();i++) {
+        	tab_label[i]=new LabelStar();
+        	tab_label[i].sommet_courant=data.getGraph().get(i);
+        	tab_label[i].marque=false;
+        	tab_label[i].cout=Double.MAX_VALUE;
+        	if (data.getMode()==Mode.LENGTH) {
+        	((LabelStar)tab_label[i]).volOiseau=Point.distance(data.getGraph().get(i).getPoint(),((ShortestPathData)data).getDestination().getPoint());
+        	}
+        	else { ((LabelStar)tab_label[i]).volOiseau=Point.distance(data.getGraph().get(i).getPoint(),((ShortestPathData)data).getDestination().getPoint())*3.6/data.getGraph().getGraphInformation().getMaximumSpeed();
+        	}
+        }
+        return tab_label; 
+    }
+    
+    /*@Override
     protected ShortestPathSolution doRun() {
 
         //INITIALISATION
-        final ShortestPathData data = getInputData();
+        /*final ShortestPathData data = getInputData();
         ShortestPathSolution solution = null;
         Graph graph = data.getGraph();
-        LabelStar[] tab_label= new LabelStar[graph.size()];
-        for (int i=0; i<graph.size();i++) {
-        	tab_label[i]=new LabelStar();
-        	tab_label[i].sommet_courant=graph.get(i);
-        	tab_label[i].marque=false;
-        	tab_label[i].cout=Double.MAX_VALUE;
-        	tab_label[i].volOiseau=Point.distance(graph.get(i).getPoint(),data.getDestination().getPoint());
-        }
+        Label[] tab_label= initLabel();
         tab_label[data.getOrigin().getId()].cout = 0;
         BinaryHeap<Label> tas= new BinaryHeap<Label>(); 
         tas.insert(tab_label[data.getOrigin().getId()]);
@@ -90,6 +100,7 @@ public class AStarAlgorithm extends DijkstraAlgorithm {
         	solution= new ShortestPathSolution(data, Status.OPTIMAL, path);
         }
         return solution;
-    }
+        
+    }*/
 }
 
