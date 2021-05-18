@@ -36,10 +36,14 @@ public class AStarAlgorithm extends DijkstraAlgorithm {
         	tab_label[i].sommet_courant=data.getGraph().get(i);
         	tab_label[i].marque=false;
         	tab_label[i].cout=Double.MAX_VALUE;
+        	double v_max=data.getMaximumSpeed();
+        	if (v_max==-1) {
+        	v_max=data.getGraph().getGraphInformation().getMaximumSpeed();
+        	}
         	if (data.getMode()==Mode.LENGTH) {
         	((LabelStar)tab_label[i]).volOiseau=Point.distance(data.getGraph().get(i).getPoint(),((ShortestPathData)data).getDestination().getPoint());
         	}
-        	else { ((LabelStar)tab_label[i]).volOiseau=Point.distance(data.getGraph().get(i).getPoint(),((ShortestPathData)data).getDestination().getPoint())*3.6/data.getGraph().getGraphInformation().getMaximumSpeed();
+        	else { ((LabelStar)tab_label[i]).volOiseau=Point.distance(data.getGraph().get(i).getPoint(),((ShortestPathData)data).getDestination().getPoint())*3.6/v_max;
         	}
         }
         return tab_label; 
@@ -56,7 +60,7 @@ public class AStarAlgorithm extends DijkstraAlgorithm {
         tab_label[data.getOrigin().getId()].cout = 0;
         BinaryHeap<Label> tas= new BinaryHeap<Label>(); 
         tas.insert(tab_label[data.getOrigin().getId()]);
-        notifyOriginProcessed(data.getOrigin());
+        notifyOriginProcessed(data.getOrigin()); 
 
         //ITERATIONS
         while (!tas.isEmpty()){
