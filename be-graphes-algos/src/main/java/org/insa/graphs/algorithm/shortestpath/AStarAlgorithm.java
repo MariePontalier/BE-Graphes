@@ -30,7 +30,7 @@ public class AStarAlgorithm extends DijkstraAlgorithm {
     }
     
     protected Label[] initLabel() {
-    	Label[] tab_label= new LabelStar[data.getGraph().size()]; //init_label 
+    	Label[] tab_label= new LabelStar[data.getGraph().size()];
         for (int i=0; i<data.getGraph().size();i++) {
         	tab_label[i]=new LabelStar();
         	tab_label[i].sommet_courant=data.getGraph().get(i);
@@ -48,63 +48,5 @@ public class AStarAlgorithm extends DijkstraAlgorithm {
         }
         return tab_label; 
     }
-    
-    /*@Override
-    protected ShortestPathSolution doRun() {
-
-        //INITIALISATION
-        /*final ShortestPathData data = getInputData();
-        ShortestPathSolution solution = null;
-        Graph graph = data.getGraph();
-        Label[] tab_label= initLabel();
-        tab_label[data.getOrigin().getId()].cout = 0;
-        BinaryHeap<Label> tas= new BinaryHeap<Label>(); 
-        tas.insert(tab_label[data.getOrigin().getId()]);
-        notifyOriginProcessed(data.getOrigin()); 
-
-        //ITERATIONS
-        while (!tas.isEmpty()){
-        	Label x = tas.deleteMin();
-        	x.marque=true;
-            System.out.println(x.cout);
-            notifyNodeMarked(x.sommet_courant);
-        	if(data.getDestination()==x.sommet_courant) {
-        		break;
-        	}
-        	for (Arc arc: x.sommet_courant.getSuccessors()) {
-        		if (!data.isAllowed(arc)) {
-                    continue;
-                }
-        		LabelStar y = tab_label[arc.getDestination().getId()];
-        		if (y.marque==false) {
-        			//double ancien_cout=y.getTotalCost();
-        			if(y.cout > x.cout+arc.getLength()) {
-        				y.cout=x.cout+arc.getLength();
-        				tas.insert(y);
-        				y.arc_precedent=arc;
-                        notifyNodeReached(arc.getDestination());
-        			}
-        		}
-        	}
-        }
-        
-        if(tab_label[data.getDestination().getId()].cout==Double.MAX_VALUE) {
-        	solution=new ShortestPathSolution(data, Status.INFEASIBLE);
-        } else {
-        	notifyDestinationReached(data.getDestination());
-        	ArrayList<Arc> arcs = new ArrayList<>();
-        	Arc arc = tab_label[data.getDestination().getId()].arc_precedent;
-        	while (arc != null) {
-                arcs.add(arc);
-                arc = tab_label[arc.getOrigin().getId()].arc_precedent;
-            }
-        	Collections.reverse(arcs);
-        	Path path;
-        	path=new Path(graph, arcs);
-        	solution= new ShortestPathSolution(data, Status.OPTIMAL, path);
-        }
-        return solution;
-        
-    }*/
 }
 
