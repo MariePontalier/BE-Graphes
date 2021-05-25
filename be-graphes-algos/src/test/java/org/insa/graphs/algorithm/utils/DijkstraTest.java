@@ -94,14 +94,14 @@ public class DijkstraTest {
         dijkstra = new DijkstraAlgorithm(Shortest);
         attendu = Path.createShortestPathFromNodes(graphe, Arrays.asList(new Node[] { noeuds[0], noeuds[3] })); // a - d        
         calcule = dijkstra.run().getPath();
-        assertTrue(("[" + nomDuTest + "] Attendu : " + attendu + "; Calculé : " +calcule), attendu.toString().compareTo(calcule.toString())==0);
+        assertTrue(("[" + nomDuTest + "] Attendu : " + attendu + "; Calculé : " +calcule), attendu.getLength() == calcule.getLength());
     
         // Fastest path
         nomDuTest = "Fastest path";
         dijkstra = new DijkstraAlgorithm(Fastest);
-        attendu = Path.createFastestPathFromNodes(graphe, Arrays.asList(new Node[] { noeuds[0], noeuds[5], noeuds[3] })); // a - d - f
+        attendu = Path.createFastestPathFromNodes(graphe, Arrays.asList(new Node[] { noeuds[1], noeuds[4], noeuds[5] })); // a - d - f
         calcule = dijkstra.run().getPath();
-        assertTrue(("[" + nomDuTest + "] Attendu : " + attendu + "; Calculé : " +calcule), attendu.toString().compareTo(calcule.toString())==0);
+        assertTrue(("[" + nomDuTest + "] Attendu : " + attendu + "; Calculé : " +calcule), attendu.getLength() == calcule.getLength());
     }
 	
 	@Test
@@ -123,9 +123,9 @@ public class DijkstraTest {
         // Chemin a - a
         nomDuTest = "Départ = Arrivée";
         dijkstra = new DijkstraAlgorithm(Vide);
-        attendu = null;
-        calcule = dijkstra.run().getPath();
-        assertTrue(("[" + nomDuTest + "] Attendu : " + attendu + "; Calculé : " +calcule), attendu == calcule);
+        double taille_attendu = 0.0;
+        double taille_calcule = dijkstra.run().getPath().getLength();
+        assertTrue(("[" + nomDuTest + "] Attendu : " + taille_attendu + "; Calculé : " + taille_calcule), taille_attendu == taille_calcule);
 	}
 	
 	   @Test
