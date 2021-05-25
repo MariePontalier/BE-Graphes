@@ -56,7 +56,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         while (!tas.isEmpty()){
         	Label x = tas.deleteMin();
         	x.marque=true;
-            System.out.println(x.cout);
+            //System.out.println(x.cout);
             notifyNodeMarked(x.sommet_courant);
         	if(data.getDestination()==x.sommet_courant) {
         		break;
